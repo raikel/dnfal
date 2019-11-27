@@ -9,14 +9,15 @@ https://dnfal.readthedocs.io
 
 Features
 --------
+
 - Face detection, alignment and encoding in images and videos.
 - Real time performance on video analysis.
 - Built on top of state-of-the-art deep learning models.
-- High-performance pre-trained models available, you don't need to train any 
-model.
+- High-performance pre-trained models available, you don't need to train any model.
 
 Deep learning models and some core functionalities for face analysis where 
 adapted from the following repositories:
+
 - Code for face detection was adapted from 
 `FaceBoxes.PyTorch <https://github.com/zisianw/FaceBoxes.PyTorch>`_, licensed 
 under the Apache 2.0 license.
