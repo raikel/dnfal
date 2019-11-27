@@ -18,11 +18,8 @@ Features
 Deep learning models and some core functionalities for face analysis where 
 adapted from the following repositories:
 
-- Code for face detection was adapted from 
-`FaceBoxes.PyTorch <https://github.com/zisianw/FaceBoxes.PyTorch>`_, licensed 
-under the Apache 2.0 license.
-- Code for face landmark detection, alignment and encoding was adapted from 
-`face.evoLVe.PyTorch <https://github.com/ZhaoJ9014/face.evoLVe.PyTorch>`_, 
+- Code for face detection was adapted from `FaceBoxes.PyTorch <https://github.com/zisianw/FaceBoxes.PyTorch>`_, licensed under the Apache 2.0 license.
+- Code for face landmark detection, alignment and encoding was adapted from `face.evoLVe.PyTorch <https://github.com/ZhaoJ9014/face.evoLVe.PyTorch>`_, 
 copyright Jian Zhao, 2019, licensed under the MIT license.
 
 Getting started
