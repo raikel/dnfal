@@ -36,11 +36,7 @@ and run the setup command from the source directory::
 
     python setup.py install
     
-Next, you must download the pretrained deep learning models from here 
-`here <https://github.com/raikel/dnfal/models>`. Uncompress the downloaded 
-files in any directory of your choice. Three models are provided: 
-`detector_weights.pth` (for face detection), `marker_weights.pth` (for face 
-landmark detection) and `encoder_weights.pth` (for face encoding).
+Next, you must download the pretrained deep learning models from `here <https://github.com/raikel/dnfal/models>`_. Uncompress the downloaded files in any directory of your choice. Three models are provided: `detector_weights.pth` (for face detection), `marker_weights.pth` (for face landmark detection) and `encoder_weights.pth` (for face encoding).
 
 
 Example usages
