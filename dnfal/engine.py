@@ -137,7 +137,8 @@ class AdaptiveRoi:
 class FaceMatcher:
     """Face matcher.
 
-    Parameters ----------
+    Parameters
+    ----------
     similarity_thresh : float, optional, (default=0.5)
         Similarity threshold for face matching. Two faces are considered to
         belong to the same person if the similarity between them is higher
@@ -221,16 +222,16 @@ class FrameAnalyzer:
 
     Parameters
     ----------
-    detector : detection.FaceDetector
+    detector : FaceDetector
         A FaceDetector object.
 
-    marker : alignment.FaceMarker or None
+    marker : FaceMarker or None
         A FaceMarker object.
 
-    aligner: alignment.FaceAligner or None
+    aligner: FaceAligner or None
         A FaceAligner object.
 
-    encoder: encoding.FaceEncoder or None
+    encoder: FaceEncoder or None
         FaceEncoder object.
 
     detection_only: bool, optional, (default=False)

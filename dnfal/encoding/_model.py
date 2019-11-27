@@ -1,3 +1,8 @@
+# Original work Copyright (c) 2019 Jian Zhao
+# Copyright (c) 2019, Raikel Bordon.
+# Use of this source code is governed by a MIT-style license that can be
+# found in the LICENSE file.
+
 import torch
 import torch.nn as nn
 from torch.nn import Linear, Conv2d, BatchNorm1d, BatchNorm2d, PReLU, ReLU, Sigmoid, Dropout, MaxPool2d, \

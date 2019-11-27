@@ -1,3 +1,8 @@
+# Original work Copyright (c) 2019 Jian Zhao
+# Copyright (c) 2019, Raikel Bordon.
+# Use of this source code is governed by a MIT-style license that can be
+# found in the LICENSE file.
+
 import torch.nn as nn
 import torch.nn.functional as nn_func
 from collections import OrderedDict
