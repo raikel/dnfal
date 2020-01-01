@@ -91,13 +91,12 @@ class AdaptiveRoi:
     def add_box(self, box: tuple):
         """Adds a new rectangle.
 
-        The first two values in the tuple rectangle represents the top-left
-        coordinates of the rectangle, while the latest two values represents
-        the bottom-left coordinates.
-
         Parameters
         -------
         box : tuple of length=4
+            The first two values in the tuple rectangle represents the top-left
+            coordinates of the rectangle, while the latest two values
+            represents the bottom-left coordinates.
         """
         cur_roi = self._cur_roi
         avg_roi = self._avg_roi

@@ -312,9 +312,13 @@ class Settings:
     @video_capture_source.setter
     def video_capture_source(self, val: (str, int, None)):
         try:
-            self._video_capture_source = validators.integer(val, coerce_value=True)
+            self._video_capture_source = validators.integer(
+                val, coerce_value=True, allow_empty=True
+            )
         except TypeError:
-            self._video_capture_source = validators.string(val, allow_empty=True)
+            self._video_capture_source = validators.string(
+                val, allow_empty=True
+            )
 
     @property
     def video_real_time(self):

@@ -1,7 +1,7 @@
 Dnfal
 =======================
 A deep learning-based library for real-time face analysis. 
-The homepage of mcrops with user documentation is located on:
+The homepage of dnfal with user documentation is located on:
 
 https://dnfal.readthedocs.io
 
@@ -36,7 +36,7 @@ and run the setup command from the source directory::
 
     python setup.py install
     
-Next, you must download the pretrained deep learning models from `here <https://github.com/raikel/dnfal/models>`_. Uncompress the downloaded files in any directory of your choice. Three models are provided: `detector_weights.pth` (for face detection), `marker_weights.pth` (for face landmark detection) and `encoder_weights.pth` (for face encoding).
+Next, you must download the pretrained deep learning models from `here <https://github.com/raikel/dnfal/tree/master/models>`_. Uncompress the downloaded files in any directory of your choice. Three models are provided: `detector_weights.pth` (for face detection), `marker_weights.pth` (for face landmark detection) and `encoder_weights.pth` (for face encoding).
 
 
 Example usages
@@ -97,9 +97,9 @@ Face detection
 Workflow to contribute
 ======================
 
-To contribute to mcrops, first create an account on `github
-<https://github.com/>`_. Once this is done, fork the `mcrops repository
-<https://github.com/raikel/mcrops>`_ to have your own repository,
+To contribute to dnfal, first create an account on `github
+<https://github.com/>`_. Once this is done, fork the `dnfal repository
+<https://github.com/raikel/dnfal>`_ to have your own repository,
 clone it using 'git clone' on the computers where you want to work. Make
 your changes in your clone, push them to your github account, test them
 on several computers, and when you are happy with them, send a pull

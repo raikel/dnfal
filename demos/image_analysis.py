@@ -90,6 +90,12 @@ def run(
             for m in face.landmarks:
                 cv.circle(face_image, (m[0], m[1]), 2, (0, 255, 0), -1)
 
+            nv = face.nose_deviation
+            print(
+                f'Detected face [{ind}]: {{ score: {face.detect_score}, '
+                f'nose deviation: [{nv[0]:.3f}, {nv[1]:.3f}] }}'
+            )
+
             cv.imshow(f'Face "{ind}"', face_image)
 
         cv.imshow(f'Faces in {image_name}', image)
@@ -112,7 +118,7 @@ if __name__ == '__main__':
         '--input',
         type=str,
         required=False,
-        default=path.join(curr_dir, 'data/images/fails/'),
+        default=path.join(curr_dir, 'data/images/pose/'),
         help='Path to input image file or directory containing image files.'
     )
     parser.add_argument(

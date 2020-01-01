@@ -63,7 +63,8 @@ def run(image_path: str, weights_path: str):
             cv.circle(image, (int(point[0]), int(point[1])), 2, (0,255,0), -1)
 
         cv.imshow(f'Face {i} (score {score:.3f})', image)
-        cv.imshow(f'Aligned Face {i} (dev: {nose_dev[0]:.3f}, {nose_dev[1]:.3f})', aligned_image)
+        title = f'Aligned Face {i} (dev: {nose_dev[0]:.3f}, {nose_dev[1]:.3f})'
+        cv.imshow(title, aligned_image)
 
         ret = cv.waitKey()
         if ret == ord(' '):
