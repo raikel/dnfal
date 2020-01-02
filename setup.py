@@ -22,12 +22,12 @@ VERSION = '0.1.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'numpy==1.16.0',
-    'opencv-python==4.1.0.25',
-    'torch==1.3.0',
-    'cvtlib==0.1.0',
-    'fnms==0.1.0',
-    'validator_collection==1.3.7'
+    'numpy>=1.16.0',
+    'opencv-python>=4.1.0.25',
+    'torch>=1.3.0',
+    'cvtlib>=0.1.0',
+    'fnms>=0.3.0',
+    'validator_collection>=1.3.7'
 ]
 
 # What packages are optional?
