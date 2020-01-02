@@ -1,10 +1,18 @@
 Dnfal
 =======================
 
-.. |Maintenance yes| image:: https://img.shields.io/badge/Maintained%3F-yes-green.svg
-   :target: https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity
+|Python Version| |Build Status| |Contributions Welcome| |License|
 
-A deep learning-based librarydsfsdfsdfsfdsfsdf for real-time face analysis. The homepage of dnfal with user documentation is located on:
+.. |Python Version| image:: https://img.shields.io/badge/python-v3.7+-blue.svg
+   :target: http://shields.io/
+.. |Build Status| image:: https://travis-ci.com/raikel/dnfal.svg?branch=master
+   :target: https://travis-ci.com/raikel/dnfal
+.. |Contributions Welcome| image:: https://img.shields.io/badge/contributions-welcome-orange.svg
+   :target: http://shields.io/
+.. |License| image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+
+A deep learning-based library for real-time face analysis. The homepage of dnfal with user documentation is located on:
 
 https://dnfal.readthedocs.io
 
