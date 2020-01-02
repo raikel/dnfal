@@ -1,5 +1,14 @@
 Dnfal
 =======================
+.. |Python| image:: https://img.shields.io/badge/python-v3.7+-blue.svg
+   :target: http://shields.io/
+.. |Build Status| image:: https://travis-ci.com/raikel/dnfal.svg?branch=master
+   :target: https://travis-ci.com/raikel/dnfal
+.. |Contributions welcome| image:: https://img.shields.io/badge/contributions-welcome-orange.svg
+   :target: http://shields.io/
+.. |License| image:: https://img.shields.io/badge/license-MIT-blue.svg
+   :target: https://opensource.org/licenses/MIT
+
 A deep learning-based library for real-time face analysis. 
 The homepage of dnfal with user documentation is located on:
 
