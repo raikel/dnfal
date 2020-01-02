@@ -1,8 +1,8 @@
 language: python
 cache:
-  - pip
+  pip: true
   directories:
-    - models
+    - models/
 python:
   - "3.7"
 install:
