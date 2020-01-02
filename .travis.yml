@@ -1,9 +1,13 @@
 language: python
-cache: pip
+cache:
+  - pip
+  directories:
+    - models
 python:
   - "3.7"
 install:
   - pip install -r requirements_dev.txt
+  - bash getmodels.sh
 script:
   - python -m unittest discover -s dnfal/tests
 after_success:
