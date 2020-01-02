@@ -38,6 +38,7 @@ class Settings:
 
     # noinspection PyTypeChecker
     def __init__(self):
+        self._force_cpu: bool = False
         self._detector_weights_path: str = ''
         self._marker_weights_path: str = ''
         self._encoder_weights_path: str = ''
@@ -67,6 +68,20 @@ class Settings:
         self._log_to_console: bool = False
 
         self._fields = [attr[1::] for attr in self.__dict__]
+
+    @property
+    def force_cpu(self):
+        """Use CPU instead GPU even if GPU is available
+
+        Returns
+        -------
+        force_cpu : bool, (default=False)
+        """
+        return self._force_cpu
+
+    @force_cpu.setter
+    def force_cpu(self, val: bool):
+        self._force_cpu = bool(validators.numeric(val))
 
     @property
     def detector_weights_path(self):

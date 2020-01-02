@@ -18,7 +18,7 @@ class FaceMarker:
         Absolute path to file containing pretrained model weights.
     """
 
-    def __init__(self, weights_path: str):
+    def __init__(self, weights_path: str, force_cpu: bool = False):
         self.onet: ONet = ONet()
 
         weights: dict = np.load(weights_path, allow_pickle=True)[()]
@@ -27,7 +27,7 @@ class FaceMarker:
 
         # noinspection PyTypeChecker
         self.gpu: torch.device = None
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and not force_cpu:
             self.gpu = torch.device('cuda', 0)
             self.onet = self.onet.to(self.gpu)
 

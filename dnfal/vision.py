@@ -21,7 +21,8 @@ class FacesVision:
             weights_path=se.detector_weights_path,
             min_height=se.detection_min_height,
             min_score=se.detection_min_score,
-            nms_thresh=se.detection_nms_thresh
+            nms_thresh=se.detection_nms_thresh,
+            force_cpu=se.force_cpu
         )
         logger.info('Building FacesVision: Face detector created.')
 
@@ -34,13 +35,17 @@ class FacesVision:
 
         if not se.detection_only or se.video_mode == VideoAnalyzer.MODE_HUNT:
             self.face_marker: FaceMarker = FaceMarker(
-                weights_path=se.marker_weights_path
+                weights_path=se.marker_weights_path,
+                force_cpu=se.force_cpu
             )
             logger.info('Building FacesVision: Face aligner created.')
+
             self.face_aligner = FaceAligner()
             logger.info('Building FacesVision: Face marker created.')
+
             self.face_encoder = FaceEncoder(
-                weights_path=se.encoder_weights_path
+                weights_path=se.encoder_weights_path,
+                force_cpu=se.force_cpu
             )
             logger.info('Building FacesVision: Face encoder created.')
 

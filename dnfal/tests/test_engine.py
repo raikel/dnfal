@@ -48,17 +48,20 @@ class TestFrameAnalyzer(unittest.TestCase):
         face_detector = FaceDetector(
             weights_path=DETECTOR_WEIGHTS_PATH,
             min_height=detection_min_height,
-            min_score=detection_min_score
+            min_score=detection_min_score,
+            force_cpu=True
         )
 
         face_marker: FaceMarker = FaceMarker(
-            weights_path=MARKER_WEIGHTS_PATH
+            weights_path=MARKER_WEIGHTS_PATH,
+            force_cpu=True
         )
 
         face_aligner = FaceAligner()
 
         face_encoder = FaceEncoder(
-            weights_path=ENCODER_WEIGHTS_PATH
+            weights_path=ENCODER_WEIGHTS_PATH,
+            force_cpu=True
         )
 
         self.frame_analyzer = FrameAnalyzer(

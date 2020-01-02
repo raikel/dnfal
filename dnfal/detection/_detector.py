@@ -9,8 +9,6 @@ import torch
 from ._model import FaceBoxes
 from fnms import nms
 
-curr_dir = path.dirname(path.abspath(__file__))
-
 MIN_SIZES = [[32, 64, 128], [256], [512]]
 STEPS = [32, 64, 128]
 CLIP = False

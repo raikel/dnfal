@@ -19,15 +19,21 @@ class FaceEncoder:
         Absolute path to file containing pretrained model weights.
     """
 
-    def __init__(self, weights_path: str):
+    def __init__(self, weights_path: str, force_cpu: bool = False):
         self.model: IR_50 = IR_50((INPUT_SIZE, INPUT_SIZE))
+
         # noinspection PyTypeChecker
         self.gpu: torch.device = None
-
-        self.model.load_state_dict(torch.load(weights_path))
-
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and not force_cpu:
             self.gpu = torch.device('cuda', 0)
+
+        if self.gpu is None:
+            cpu = torch.device('cpu')
+            pretrained_dict = torch.load(weights_path, map_location=cpu)
+        else:
+            pretrained_dict = torch.load(weights_path)
+
+        self.model.load_state_dict(pretrained_dict)
 
         if self.gpu is not None:
             self.model = self.model.to(self.gpu)
