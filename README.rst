@@ -10,7 +10,7 @@ Dnfal
 .. |License| image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://opensource.org/licenses/MIT
 
-A deep learning-based library for real-time face analysis. The homepage of dnfal with user documentation is located on:
+A deep learning-based librarydsfsdfsdfsfdsfsdf for real-time face analysis. The homepage of dnfal with user documentation is located on:
 
 https://dnfal.readthedocs.io
 
