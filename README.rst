@@ -1,5 +1,6 @@
 Dnfal
 =======================
+
 .. |Python| image:: https://img.shields.io/badge/python-v3.7+-blue.svg
    :target: http://shields.io/
 .. |Build Status| image:: https://travis-ci.com/raikel/dnfal.svg?branch=master
