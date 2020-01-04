@@ -1,14 +1,14 @@
 Dnfal
 =======================
 
-|Python Version| |Test Coverage| |Build Status| |Contributions Welcome| |License|
+|Build Status| |Test Coverage| |Python Version| |Contributions Welcome| |License|
 
-.. |Python Version| image:: https://img.shields.io/badge/python-v3.7+-blue.svg
-   :target: http://shields.io/
-.. |Test Coverage| image:: https://codecov.io/gh/raikel/dnfal/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/raikel/dnfal
 .. |Build Status| image:: https://travis-ci.com/raikel/dnfal.svg?branch=master
    :target: https://travis-ci.com/raikel/dnfal
+.. |Test Coverage| image:: https://codecov.io/gh/raikel/dnfal/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/raikel/dnfal
+.. |Python Version| image:: https://img.shields.io/badge/python-v3.7+-blue.svg
+   :target: http://shields.io/
 .. |Contributions Welcome| image:: https://img.shields.io/badge/contributions-welcome-orange.svg
    :target: http://shields.io/
 .. |License| image:: https://img.shields.io/badge/license-MIT-blue.svg
