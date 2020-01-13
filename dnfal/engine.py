@@ -679,6 +679,7 @@ class VideoAnalyzer:
 
         cap_fail_counter = 0
         cap_success = False
+        do_detection = False
         self.start_at = time()
 
         while self._run:
@@ -687,6 +688,7 @@ class VideoAnalyzer:
                 wait = last_detect_at + self.detect_interval - time()
                 if wait > 0:
                     sleep(wait)
+                do_detection = True
 
             while self._paused:
                 sleep(VIDEO_PAUSE_SLEEP)
@@ -711,9 +713,9 @@ class VideoAnalyzer:
                 break
 
             if self.real_time:
-                do_detection = (
-                    self.timestamp - last_detect_at >= self.detect_interval
-                )
+                # do_detection = (
+                #     self.timestamp - last_detect_at >= self.detect_interval
+                # )
                 if do_detection:
                     self.frame, cap_success = cap.next_frame()
             else:
@@ -722,7 +724,7 @@ class VideoAnalyzer:
                     self.frame, cap_success = cap.next_frame()
                 else:
                     cap_success = cap.grab_next()
-
+            #do_detection = False
             if do_detection and self.frame is not None:
                 cap_fail_counter = 0
                 last_detect_at = self.timestamp

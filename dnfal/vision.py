@@ -86,7 +86,10 @@ class FacesVision:
 
     def init_video_analyzer(self, se: Settings):
         if se.video_capture_source is not None:
-            self.video_capture = VideoCapture(src=se.video_capture_source)
+            self.video_capture = VideoCapture(
+                src=se.video_capture_source,
+                auto_grab=se.video_real_time
+            )
 
             self.video_analyzer = VideoAnalyzer(
                 frame_analyzer=self.frame_analyzer,
