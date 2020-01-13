@@ -18,14 +18,14 @@ URL = 'https://github.com/raikel/dnfal'
 EMAIL = 'raikelbl@gmail.com'
 AUTHOR = 'Raikel Bordon'
 REQUIRES_PYTHON = '>=3.4.0'
-VERSION = '0.2.0'
+VERSION = '0.4.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
     'numpy>=1.16.0',
     'opencv-python>=4.1.0.25',
     'torch>=1.3.0',
-    'cvtlib>=0.1.0',
+    'cvtlib>=0.6.0',
     'fnms>=0.3.0',
     'validator_collection>=1.3.7'
 ]

@@ -785,11 +785,13 @@ class VideoAnalyzer:
                 logger.debug(f'Current frame rate: {self.frame_rate:.1f} FPS.')
 
             if not cap_success:
-                if self.real_time:
-                    sleep(1)
                 cap_fail_counter += 1
-                if cap_fail_counter > self.MAX_NULL_FRAMES:
+                if not self.real_time:
                     break
+                else:
+                    if cap_fail_counter > self.MAX_NULL_FRAMES:
+                        raise RuntimeError('Maximum number of readed null frames reached.')
+                    sleep(1)
 
             if self.frame is not None and frame_callback is not None:
                 frame_callback()

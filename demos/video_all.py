@@ -32,7 +32,7 @@ def run(
     settings.align_max_deviation = (0.4, 0.3)
     settings.detection_min_score = 0.95
     settings.detection_only = False
-    settings.detection_min_height = 32
+    settings.detection_min_height = 24
     settings.detection_face_padding = 0
     settings.video_capture_source = video_path
     settings.logging_level = 'debug'
@@ -99,8 +99,8 @@ if __name__ == '__main__':
         '--input',
         type=str,
         required=False,
-        default=0,
-        #default='rtsp://admin:t!4ra222@172.16.77.115:554/cam/realmonitor?channel=1&subtype=0',
+        #default=0,
+        default='rtsp://admin:t!4ra222@172.16.77.102:554/cam/realmonitor?channel=1&subtype=0',
         #default=path.join(curr_dir, 'data/video/people-walking-1.mp4'),
         help='Path to input video file or camera stream.'
     )
