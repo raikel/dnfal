@@ -31,6 +31,7 @@ class Face:
         self,
         box: tuple,
         image: np.ndarray,
+        aligned_image: np.ndarray = None,
         key: int = None,
         frame: Frame = None,
         subject: 'Subject' = None,
@@ -46,6 +47,7 @@ class Face:
         self.data: dict = {}
         self.box: tuple = box
         self.image: np.ndarray = image
+        self.aligned_image: np.ndarray = aligned_image
         self.frame: Frame = frame
         self.subject: 'Subject' = subject
         self.embeddings: np.ndarray = embeddings
@@ -54,7 +56,7 @@ class Face:
         self.mark_score: float = mark_score
         self.nose_deviation: Tuple[float, float] = nose_deviation
         self.timestamp: float = timestamp
-        self.offset: float = offset
+        self.offset: Tuple[int, int] = offset
 
     def serialize(self):
 

@@ -282,6 +282,7 @@ class FrameAnalyzer:
         detection_only: bool = False,
         max_frame_size: int = 0,
         store_frames: bool = False,
+        store_aligned: bool = False,
         max_deviation: Tuple[float, float] = None,
         marking_min_score: float = 0.9,
         face_padding: float = 0.2
@@ -293,6 +294,7 @@ class FrameAnalyzer:
         self.detection_only: bool = detection_only
         self.max_frame_size: int = max_frame_size
         self.store_frames: bool = store_frames
+        self.store_aligned: bool = store_aligned
         self.max_deviation: Tuple[float, float] = max_deviation
         self.marking_min_score: float = marking_min_score
         self.face_padding: float = face_padding
@@ -323,8 +325,8 @@ class FrameAnalyzer:
         """
 
         h, w = image.shape[0:2]
-        faces = []
-        embeddings = []
+        faces: List[Face] = []
+        embeddings: np.ndarray = np.array([])
 
         boxes, detect_scores = self.face_detector.detect(image)
         n_boxes = len(boxes)
@@ -387,7 +389,7 @@ class FrameAnalyzer:
             marking_min_score = self.marking_min_score
             for i in range(n_boxes):
                 face_mark = face_marks[i] + offsets[i]
-                face_image, nose_deviation = self.face_aligner.align(
+                aligned_face_image, nose_deviation = self.face_aligner.align(
                     padded_face_images[i], face_mark
                 )
                 if (mark_scores[i] > marking_min_score) and (
@@ -396,8 +398,9 @@ class FrameAnalyzer:
                         nose_deviation[1] <= max_deviation[1]
                     )
                 ):
-                    aligned_face_images.append(face_image)
-                    faces.append(Face(
+                    aligned_face_images.append(aligned_face_image)
+
+                    face = Face(
                         image=padded_face_images[i],
                         box=padded_boxes[i],
                         frame=frame,
@@ -407,9 +410,13 @@ class FrameAnalyzer:
                         mark_score=mark_scores[i],
                         timestamp=timestamp,
                         offset=offsets[i]
-                    ))
+                    )
 
-            embeddings = []
+                    if self.store_aligned:
+                        face.aligned_image = aligned_face_image
+
+                    faces.append(face)
+
             if len(faces) and self.face_encoder is not None:
                 embeddings = self.face_encoder.encode(aligned_face_images)
                 for i, face in enumerate(faces):
