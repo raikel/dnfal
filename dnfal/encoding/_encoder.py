@@ -6,7 +6,7 @@ import torch
 
 from ._model import IR_50
 
-INPUT_SIZE = 112
+DEFAULT_INPUT_SIZE = 112
 USE_TTA = True
 
 
@@ -19,8 +19,14 @@ class FaceEncoder:
         Absolute path to file containing pretrained model weights.
     """
 
-    def __init__(self, weights_path: str, force_cpu: bool = False):
-        self.model: IR_50 = IR_50((INPUT_SIZE, INPUT_SIZE))
+    def __init__(
+        self,
+        weights_path: str,
+        force_cpu: bool = False,
+        input_size: int = DEFAULT_INPUT_SIZE
+    ):
+        self.input_size: int = input_size
+        self.model: IR_50 = IR_50((input_size, input_size))
 
         # noinspection PyTypeChecker
         self.gpu: torch.device = None
@@ -55,21 +61,24 @@ class FaceEncoder:
             corresponding input face image.
         """
 
+        image_shape = (self.input_size, self.input_size)
         if USE_TTA:
-            shape = (2*len(images), 3, INPUT_SIZE, INPUT_SIZE)
+            shape = (2 * len(images), 3) + image_shape
             batch = np.zeros(shape, dtype=np.float32)
         else:
-            shape = (len(images), 3, INPUT_SIZE, INPUT_SIZE)
+            shape = (len(images), 3) + image_shape
             batch = np.zeros(shape, dtype=np.float32)
 
         for index, image in enumerate(images):
-            image = cv2.resize(image, (INPUT_SIZE, INPUT_SIZE))
+            image = cv2.resize(image, image_shape)
 
             image_flipped = None
             if USE_TTA:
-                image_flipped = _image_transform(cv2.flip(image, 1))
+                image_flipped = _image_transform(
+                    cv2.flip(image, 1), self.input_size
+                )
 
-            image = _image_transform(image)
+            image = _image_transform(image, self.input_size)
 
             if USE_TTA:
                 batch[2 * index, :, :, :] = image
@@ -94,12 +103,12 @@ class FaceEncoder:
         return embeddings.numpy()
 
 
-def _image_transform(image: np.ndarray):
+def _image_transform(image: np.ndarray, size: int):
     # BGR to RGB
     image = image[:, :, ::-1]
     # load numpy to tensor
     image = image.transpose((2, 0, 1))
-    image = np.reshape(image, [1, 3, INPUT_SIZE, INPUT_SIZE])
+    image = np.reshape(image, (1, 3, size, size))
     if image.dtype != np.float32:
         image = np.float32(image)
     image = (image - 127.5) * 0.0078125

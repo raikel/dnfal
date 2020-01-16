@@ -335,21 +335,31 @@ class FrameAnalyzer:
         face_images = [image[b[1]:b[3], b[0]:b[2]] for b in boxes]
 
         padded_face_images = face_images
+        padded_boxes = boxes
         if self.face_padding != 0:
             pad = self.face_padding
             paddings = [int(pad * (b[2] - b[0])) for b in boxes]
-            boxes = [(
+            padded_boxes = [(
                 max(0, b[0] - p),
                 max(0, b[1] - p),
                 min(b[2] + p, w - 1),
                 min(b[3] + p, h - 1),
             ) for b, p in zip(boxes, paddings)]
-
-            padded_face_images = [image[b[1]:b[3], b[0]:b[2]] for b in boxes]
+            offsets = [
+                (box[0] - padded_box[0], box[1] - padded_box[1])
+                for box, padded_box in zip(boxes, padded_boxes)
+            ]
+            padded_face_images = [
+                image[b[1]:b[3], b[0]:b[2]]
+                for b in padded_boxes
+            ]
         else:
-            paddings = [0] * n_boxes
+            offsets = [(0, 0)] * n_boxes
 
-        boxes = [(b[0] / w, b[1] / h, b[2] / w, b[3] / h) for b in boxes]
+        padded_boxes = [
+            (b[0] / w, b[1] / h, b[2] / w, b[3] / h)
+            for b in padded_boxes
+        ]
 
         frame = None
         if self.store_frames and n_boxes:
@@ -364,11 +374,11 @@ class FrameAnalyzer:
             for i in range(n_boxes):
                 faces.append(Face(
                     image=padded_face_images[i],
-                    box=boxes[i],
+                    box=padded_boxes[i],
                     frame=frame,
                     detect_score=detect_scores[i],
                     timestamp=timestamp,
-                    padding=paddings[i]
+                    offset=offsets[i]
                 ))
         else:
             face_marks, mark_scores = self.face_marker.mark(face_images)
@@ -376,8 +386,9 @@ class FrameAnalyzer:
             max_deviation = self.max_deviation
             marking_min_score = self.marking_min_score
             for i in range(n_boxes):
+                face_mark = face_marks[i] + offsets[i]
                 face_image, nose_deviation = self.face_aligner.align(
-                    padded_face_images[i], face_marks[i]
+                    padded_face_images[i], face_mark
                 )
                 if (mark_scores[i] > marking_min_score) and (
                     max_deviation is None or (
@@ -388,18 +399,18 @@ class FrameAnalyzer:
                     aligned_face_images.append(face_image)
                     faces.append(Face(
                         image=padded_face_images[i],
-                        box=boxes[i],
+                        box=padded_boxes[i],
                         frame=frame,
-                        landmarks=face_marks[i] + paddings[i],
+                        landmarks=face_mark,
                         nose_deviation=nose_deviation,
                         detect_score=detect_scores[i],
                         mark_score=mark_scores[i],
                         timestamp=timestamp,
-                        padding=paddings[i]
+                        offset=offsets[i]
                     ))
 
             embeddings = []
-            if len(faces):
+            if len(faces) and self.face_encoder is not None:
                 embeddings = self.face_encoder.encode(aligned_face_images)
                 for i, face in enumerate(faces):
                     face.embeddings = embeddings[i]

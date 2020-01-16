@@ -82,7 +82,7 @@ class FaceMarker:
         marks[:, 5:10] = np.expand_dims(image_sizes[:, 1], 1) * marks[:, 5:10]
 
         scores = scores[:, 1].reshape((-1,))
-        marks = marks.reshape(-1, 2, 5).transpose(0, 2, 1)
+        marks = marks.reshape(-1, 2, 5).transpose(0, 2, 1).astype(np.int32)
 
         return marks, scores
 

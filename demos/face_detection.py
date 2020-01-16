@@ -18,8 +18,10 @@ def run(image_path: str, weights_path: str):
 
     config_logger(level='DEBUG', to_console=True)
 
-    faces_detector = FaceDetector(
-        weights_path=weights_path,  min_score=0.9, nms_thresh=0.7
+    face_detector = FaceDetector(
+        weights_path=weights_path,
+        min_score=0.9,
+        nms_thresh=0.7
     )
 
     if path.isdir(image_path):
@@ -61,7 +63,7 @@ def run(image_path: str, weights_path: str):
             logger.info(f'Image resized to {w}x{h} pixels.')
 
         tic = time()
-        boxes, scores = faces_detector.detect(image)
+        boxes, scores = face_detector.detect(image)
         toc = time()
         logger.info(f'Found {len(boxes)} faces in {int(1000*(toc - tic))} ms.')
 

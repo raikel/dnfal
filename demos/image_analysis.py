@@ -35,7 +35,7 @@ def run(
     faces_vision = FacesVision(settings)
 
     if path.isdir(image_path):
-        image_paths = list_files(image_path, IMAGE_EXT, recursive=False)
+        image_paths = list_files(image_path, IMAGE_EXT, recursive=True)
         if len(image_paths) == 0:
             raise ValueError(f'No images found in {image_path}.')
     elif path.isfile(image_path):

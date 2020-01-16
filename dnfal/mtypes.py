@@ -40,7 +40,7 @@ class Face:
         mark_score: float = 0.0,
         nose_deviation: Tuple[float, float] = (0.0, 0.0),
         timestamp: float = 0,
-        padding: float = 0
+        offset: Tuple[int, int] = (0, 0)
     ):
         self.key: int = key
         self.data: dict = {}
@@ -54,7 +54,7 @@ class Face:
         self.mark_score: float = mark_score
         self.nose_deviation: Tuple[float, float] = nose_deviation
         self.timestamp: float = timestamp
-        self.padding: float = padding
+        self.offset: float = offset
 
     def serialize(self):
 

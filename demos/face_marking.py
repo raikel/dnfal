@@ -84,7 +84,7 @@ if __name__ == '__main__':
         '--input',
         type=str,
         required=False,
-        default=path.join(curr_dir, 'output/video_all/'),
+        default=path.join(curr_dir, 'data/images/faces-aligned/'),
         help='Path to input image file or directory containing image files.'
     )
     parser.add_argument(
