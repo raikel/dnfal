@@ -91,7 +91,7 @@ if __name__ == '__main__':
         '--weights',
         type=str,
         required=False,
-        default=path.join(parent_dir, 'models/weights_marker.npy'),
+        default=path.join(parent_dir, 'models/weights_face_marker.npy'),
         help='Path to file containing the model weights of face marker.'
     )
     args = parser.parse_args(sys.argv[1:])

@@ -1,13 +1,12 @@
 from itertools import product as product
 from math import ceil
 from typing import Tuple
-from os import path
 
 import numpy as np
 import torch
+from fnms import nms
 
 from ._model import FaceBoxes
-from fnms import nms
 
 MIN_SIZES = [[32, 64, 128], [256], [512]]
 STEPS = [32, 64, 128]

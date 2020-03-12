@@ -12,9 +12,9 @@ from dnfal.engine import (
 )
 from cvtlib.files import list_files
 
-DETECTOR_WEIGHTS_PATH = 'models/weights_detector.pth'
-MARKER_WEIGHTS_PATH = 'models/weights_marker.npy'
-ENCODER_WEIGHTS_PATH = 'models/weights_encoder.pth'
+DETECTOR_WEIGHTS_PATH = 'models/weights_face_detector.pth'
+MARKER_WEIGHTS_PATH = 'models/weights_face_marker.npy'
+ENCODER_WEIGHTS_PATH = 'models/weights_face_encoder.pth'
 
 CURR_DIR = path.dirname(path.abspath(__file__))
 DATA_DIR = path.join(CURR_DIR, 'data')

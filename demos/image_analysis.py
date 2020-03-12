@@ -132,21 +132,21 @@ if __name__ == '__main__':
         '--weights_detector',
         type=str,
         required=False,
-        default=path.join(parent_dir, 'models/weights_detector.pth'),
+        default=path.join(parent_dir, 'models/weights_face_detector.pth'),
         help='Path to file containing the model weights of face detector.'
     )
     parser.add_argument(
         '--weights_marker',
         type=str,
         required=False,
-        default=path.join(parent_dir, 'models/weights_marker.npy'),
+        default=path.join(parent_dir, 'models/weights_face_marker.npy'),
         help='Path to file containing the model weights of face marker.'
     )
     parser.add_argument(
         '--weights_encoder',
         type=str,
         required=False,
-        default=path.join(parent_dir, 'models/weights_encoder.pth'),
+        default=path.join(parent_dir, 'models/weights_face_encoder.pth'),
         help='Path to file containing the model weights of face enocoder.'
     )
     args = parser.parse_args(sys.argv[1:])

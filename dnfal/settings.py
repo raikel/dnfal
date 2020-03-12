@@ -42,6 +42,7 @@ class Settings:
         self._detector_weights_path: str = ''
         self._marker_weights_path: str = ''
         self._encoder_weights_path: str = ''
+        self._genderage_weights_path: str = ''
         self._detection_min_height: int = 64
         self._detection_min_score: float = 0.9
         self._marking_min_score: float = 0.95
@@ -49,6 +50,7 @@ class Settings:
         self._detection_face_padding: float = 0.2
         self._detection_only: bool = False
         self._align_max_deviation: Tuple[float, float] = None
+        self._face_align_size: int = 112
         self._max_frame_size: int = 0
         self._similarity_thresh: float = 0.5
         self._video_capture_source: [str, int, None] = None
@@ -124,6 +126,20 @@ class Settings:
     @encoder_weights_path.setter
     def encoder_weights_path(self, val: str):
         self._encoder_weights_path = validators.string(val)
+
+    @property
+    def genderage_weights_path(self):
+        """Path to file containing the model weights of gender-age predictor
+
+        Returns
+        -------
+        genderage_weights_path : str
+        """
+        return self._genderage_weights_path
+
+    @genderage_weights_path.setter
+    def genderage_weights_path(self, val: str):
+        self._genderage_weights_path = validators.string(val)
 
     @property
     def detection_min_height(self):
@@ -262,6 +278,24 @@ class Settings:
         self._align_max_deviation = val if val is None else tuple([
             validators.numeric(i, minimum=0) for i in val
         ])
+
+    @property
+    def face_align_size(self):
+        """Output image size from face alignment
+
+        Face analysis includes three steps: detection, alignment and
+        encoding. The image out of the alignment step is squared with size
+        `face_align_size`.
+
+        Returns
+        -------
+        face_align_size : int, (default=112)
+        """
+        return self._face_align_size
+
+    @face_align_size.setter
+    def face_align_size(self, val: (float, int)):
+        self._face_align_size = int(validators.numeric(val))
 
     @property
     def max_frame_size(self):

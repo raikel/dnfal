@@ -3,4 +3,5 @@ numpy>=1.16.0
 opencv-python>=4.1.0.25
 cvtlib>=0.6.0
 torch>=1.3.0
+torchvision>=0.4.1
 fnms>=0.3.0

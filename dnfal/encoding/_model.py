@@ -3,11 +3,24 @@
 # Use of this source code is governed by a MIT-style license that can be
 # found in the LICENSE file.
 
+from collections import namedtuple
+
 import torch
 import torch.nn as nn
-from torch.nn import Linear, Conv2d, BatchNorm1d, BatchNorm2d, PReLU, ReLU, Sigmoid, Dropout, MaxPool2d, \
-    AdaptiveAvgPool2d, Sequential, Module
-from collections import namedtuple
+from torch.nn import (
+    Linear,
+    Conv2d,
+    BatchNorm1d,
+    BatchNorm2d,
+    PReLU,
+    ReLU,
+    Sigmoid,
+    Dropout,
+    MaxPool2d,
+    AdaptiveAvgPool2d,
+    Sequential,
+    Module
+)
 
 
 class Flatten(Module):
@@ -48,9 +61,9 @@ class SEModule(Module):
         return module_input * x
 
 
-class bottleneck_IR(Module):
+class BottleneckIR(Module):
     def __init__(self, in_channel, depth, stride):
-        super(bottleneck_IR, self).__init__()
+        super(BottleneckIR, self).__init__()
         if in_channel == depth:
             self.shortcut_layer = MaxPool2d(1, stride)
         else:
@@ -68,9 +81,9 @@ class bottleneck_IR(Module):
         return res + shortcut
 
 
-class bottleneck_IR_SE(Module):
+class BottleneckIRSE(Module):
     def __init__(self, in_channel, depth, stride):
-        super(bottleneck_IR_SE, self).__init__()
+        super(BottleneckIRSE, self).__init__()
         if in_channel == depth:
             self.shortcut_layer = MaxPool2d(1, stride)
         else:
@@ -94,12 +107,13 @@ class bottleneck_IR_SE(Module):
 
 
 class Bottleneck(namedtuple('Block', ['in_channel', 'depth', 'stride'])):
-    '''A named tuple describing a ResNet block.'''
+    """A named tuple describing a ResNet block."""
 
 
 def get_block(in_channel, depth, num_units, stride=2):
-
-    return [Bottleneck(in_channel, depth, stride)] + [Bottleneck(depth, depth, 1) for i in range(num_units - 1)]
+    return [Bottleneck(in_channel, depth, stride)] + [
+        Bottleneck(depth, depth, 1) for i in range(num_units - 1)
+    ]
 
 
 def get_blocks(num_layers):
@@ -124,6 +138,8 @@ def get_blocks(num_layers):
             get_block(in_channel=128, depth=256, num_units=36),
             get_block(in_channel=256, depth=512, num_units=3)
         ]
+    else:
+        raise ValueError(f'Invalid number of layers: {num_layers}')
 
     return blocks
 
@@ -136,9 +152,9 @@ class Backbone(Module):
         assert mode in ['ir', 'ir_se'], "mode should be ir or ir_se"
         blocks = get_blocks(num_layers)
         if mode == 'ir':
-            unit_module = bottleneck_IR
+            unit_module = BottleneckIR
         elif mode == 'ir_se':
-            unit_module = bottleneck_IR_SE
+            unit_module = BottleneckIRSE
         self.input_layer = Sequential(Conv2d(3, 64, (3, 3), 1, 1, bias=False),
                                       BatchNorm2d(64),
                                       PReLU(64))

@@ -276,9 +276,9 @@ class FrameAnalyzer:
     def __init__(
         self,
         detector: FaceDetector,
-        marker: FaceMarker,
-        aligner: FaceAligner,
-        encoder: FaceEncoder,
+        marker: [FaceMarker, None],
+        aligner: [FaceAligner, None],
+        encoder: [FaceEncoder, None],
         detection_only: bool = False,
         max_frame_size: int = 0,
         store_frames: bool = False,
@@ -529,7 +529,8 @@ class VideoAnalyzer:
     """
 
     LOGGING_FRAME_INTERVAL = 100
-    MAX_NULL_FRAMES = 10
+    MAX_CAMERA_NULL_FRAMES = 50
+    MAX_VIDEO_NULL_FRAMES = 3
     MAX_STORED_SUBJECTS = 20
     STORED_SUBJECTS_SHRINK = 0.3
 
@@ -804,12 +805,20 @@ class VideoAnalyzer:
 
             if not cap_success:
                 cap_fail_counter += 1
-                if not self.real_time:
+                if (
+                    not self.real_time and
+                    cap_fail_counter >= self.MAX_VIDEO_NULL_FRAMES
+                ):
                     break
-                else:
-                    if cap_fail_counter > self.MAX_NULL_FRAMES:
-                        raise RuntimeError('Maximum number of readed null frames reached.')
-                    sleep(1)
+                elif (
+                    self.real_time and
+                    cap_fail_counter >= self.MAX_CAMERA_NULL_FRAMES
+                ):
+                    raise RuntimeError(
+                        'Maximum number of readed null frames reached.'
+                    )
+
+                sleep(1)
 
             if self.frame is not None and frame_callback is not None:
                 frame_callback()

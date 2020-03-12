@@ -5,44 +5,34 @@ from time import time
 
 import cv2 as cv
 from cvtlib.drawing import Drawer
-from cvtlib.files import list_files
 from cvtlib.image import resize
 
-from dnfal.detection import FaceDetector
+from utils import list_images, DEMOS_DIR, MODELS_DIR
+from dnfal.persons import PersonDetector
 from dnfal.loggers import logger, config_logger
-
-IMAGE_EXT = ('.jpeg', '.jpg', '.png')
 
 
 def run(image_path: str, weights_path: str):
 
     config_logger(level='DEBUG', to_console=True)
 
-    face_detector = FaceDetector(
+    person_detector = PersonDetector(
         weights_path=weights_path,
-        min_score=0.9,
-        nms_thresh=0.7
+        resize_height=192
     )
 
-    if path.isdir(image_path):
-        image_paths = list_files(image_path, IMAGE_EXT, recursive=True)
-        if len(image_paths) == 0:
-            raise ValueError(f'No images found in {image_path}.')
-    elif path.isfile(image_path):
-        image_paths = [image_path]
-    else:
-        raise ValueError(f'Input "{image_path}" is not file nor a directory.')
+    images_paths = list_images(image_path)
 
     logger.info('Starting analysis...')
     logger.info('Press "space" key to display next result. Press "q" to quit.')
 
-    max_image_size = 640
+    max_image_size = 1920
 
     drawer = Drawer()
     drawer.font_scale = 0.5
-    drawer.font_linewidth = 2
+    drawer.font_linewidth = 1
 
-    for image_path in image_paths:
+    for image_path in images_paths:
         image_name = path.basename(image_path)
 
         logger.info(f'Analyzing image {image_name}...')
@@ -63,12 +53,12 @@ def run(image_path: str, weights_path: str):
             logger.info(f'Image resized to {w}x{h} pixels.')
 
         tic = time()
-        boxes, scores = face_detector.detect(image)
+        boxes, scores = person_detector.detect(image)
         toc = time()
-        logger.info(f'Found {len(boxes)} faces in {int(1000*(toc - tic))} ms.')
+        logger.info(f'Found {len(boxes)} persons in {(toc - tic):.3f} s.')
 
         for ind, box in enumerate(boxes):
-            drawer.draw_labeled_box(image, f'{scores[ind]:.3f}', box)
+            drawer.draw_labeled_box(image, f'{int(100*scores[ind])}%', box)
 
         cv.imshow(f'Faces in {image_name}', image)
 
@@ -82,23 +72,21 @@ def run(image_path: str, weights_path: str):
 
 if __name__ == '__main__':
 
-    curr_dir = path.dirname(path.abspath(__file__))
-    parent_dir, _ = path.split(curr_dir)
-
     parser = argparse.ArgumentParser()
+
     parser.add_argument(
         '--input',
         type=str,
         required=False,
-        default=path.join(curr_dir, 'data/images/crowd/'),
+        default=path.join(DEMOS_DIR, 'data/images/persons'),
         help='Path to input image file or directory containing image files.'
     )
     parser.add_argument(
         '--weights',
         type=str,
         required=False,
-        default=path.join(parent_dir, 'models/weights_face_detector.pth'),
-        help='Path to file containing the model weights of face detector.'
+        default=path.join(MODELS_DIR, 'weights_person_detector.pth'),
+        help='Path to file containing the model weights of person detector.'
     )
     args = parser.parse_args(sys.argv[1:])
 

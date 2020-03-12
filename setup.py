@@ -18,7 +18,7 @@ URL = 'https://github.com/raikel/dnfal'
 EMAIL = 'raikelbl@gmail.com'
 AUTHOR = 'Raikel Bordon'
 REQUIRES_PYTHON = '>=3.4.0'
-VERSION = '0.7.0'
+VERSION = '0.8.3'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
