@@ -497,11 +497,10 @@ class Settings:
         return self._video_hunt_embeddings
 
     @video_hunt_embeddings.setter
-    def video_hunt_embeddings(self, val: List[float]):
-        val = validators.iterable(val, allow_empty=True)
-        self._video_hunt_embeddings = val if val is None else [
-            validators.numeric(i) for i in val
-        ]
+    def video_hunt_embeddings(self, val: List[List[float]]):
+        self._video_hunt_embeddings = validators.iterable(
+            val, allow_empty=True
+        )
 
     @property
     def video_hunt_keys(self):
