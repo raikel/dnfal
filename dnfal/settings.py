@@ -520,11 +520,8 @@ class Settings:
         return self._video_hunt_keys
 
     @video_hunt_keys.setter
-    def video_hunt_keys(self, val: List[int]):
-        val = validators.iterable(val, allow_empty=True)
-        self._video_hunt_keys = val if val is None else [
-            validators.numeric(i) for i in val
-        ]
+    def video_hunt_keys(self, val: list):
+        self._video_hunt_keys = validators.iterable(val, allow_empty=True)
 
     @property
     def video_start_at(self):

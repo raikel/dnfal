@@ -102,18 +102,15 @@ class Subject:
         self.data: dict = {}
         self.faces: List[Face] = faces
         self.embeddings: np.ndarray = embeddings
+        self.last_updated: float = -float('inf')
 
     def append_face(self, face: Face):
         self.faces.append(face)
+        if face.timestamp > self.last_updated:
+            self.last_updated = face.timestamp
 
     def serialize(self):
         return {
             'faces': [face.serialize() for face in self.faces],
             'embeddings': self.embeddings.tolist()
         }
-
-    @property
-    def last_updated(self) -> float:
-        if len(self.faces):
-            return max([face.timestamp for face in self.faces])
-        return 0

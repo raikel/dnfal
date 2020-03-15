@@ -500,7 +500,7 @@ class VideoAnalyzer:
         of embeddings vectors in `hunt_embeddings` that represents the hunted
         faces, and to register only matched faces. Each embedding vector of a
         hunted face must be associated to face key in `hunt_keys`, which
-        is a list of integers numbers of length `n_hunts`.
+        is a list of integers numbers or strings of length `n_hunts`.
 
     start_at: float, optional, (default=0)
         Starting time in seconds of processing for video source files. If
@@ -785,6 +785,10 @@ class VideoAnalyzer:
 
                 if len(faces) > 0:
                     self.faces_count += len(faces)
+
+                    # if self.timestamp < 4:
+                    #     for i, face in enumerate(faces):
+                    #         cv.imwrite(f'/home/ronin/Projects/active/dnfal/demos/output/face_hunt/face_{self.timestamp}_{i}.jpg', face.image)
 
                     if self.frame_analyzer.detection_only:
                         self._create_subjects(faces, update_subject_callback)
