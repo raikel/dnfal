@@ -5,6 +5,7 @@ from typing import List, Tuple
 import cv2 as cv
 import cvtlib
 import numpy as np
+import sklearn
 import torch
 from cvtlib.video import VideoCapture
 
@@ -131,6 +132,22 @@ class AdaptiveRoi:
             )) / 4
 
             self._roi_dev = alpha * roi_dev + (1 - alpha) * self._roi_dev
+
+
+class Cluster:
+
+    def __init__(self, distance_thr: float = 0.5, min_samples=2):
+        self._distance_thr: float = distance_thr
+        self._min_samples: int = min_samples
+
+    def _run(self, X):
+        clustering = sklearn.cluster.DBSCAN(
+            eps=self._distance_thr,
+            min_samples=self._min_samples,
+            metric='euclidean'
+        )
+        clustering.fit(X)
+        return clustering.labels_
 
 
 class FaceMatcher:
