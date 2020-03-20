@@ -6,6 +6,8 @@ import cv2 as cv
 import cvtlib
 import numpy as np
 import sklearn
+from sklearn.neighbors import NearestNeighbors
+from sklearn.cluster import DBSCAN
 import torch
 from cvtlib.video import VideoCapture
 
@@ -134,20 +136,50 @@ class AdaptiveRoi:
             self._roi_dev = alpha * roi_dev + (1 - alpha) * self._roi_dev
 
 
-class Cluster:
+def cluster_features(
+    features,
+    timestamps = None,
+    distance_thr: float = 0.5,
+    timestamp_thr: float = 0,
+    min_samples: int = 2,
+    grouped: bool = True
+):
+    dist_neigh = NearestNeighbors(radius=distance_thr)
+    dist_neigh.fit(features)
+    dist_graph = dist_neigh.radius_neighbors_graph(mode='distance')
 
-    def __init__(self, distance_thr: float = 0.5, min_samples=2):
-        self._distance_thr: float = distance_thr
-        self._min_samples: int = min_samples
+    if timestamps is not None and timestamp_thr > 0:
+        time_neigh = NearestNeighbors(radius=timestamp_thr)
+        time_neigh.fit(timestamps)
+        time_graph = time_neigh.radius_neighbors_graph(mode='connectivity')
+        dist_graph = dist_graph.multiply(time_graph)
+        dist_graph.eliminate_zeros()
 
-    def _run(self, X):
-        clustering = sklearn.cluster.DBSCAN(
-            eps=self._distance_thr,
-            min_samples=self._min_samples,
-            metric='euclidean'
-        )
-        clustering.fit(X)
-        return clustering.labels_
+    clustering = DBSCAN(
+        eps=distance_thr,
+        min_samples=min_samples,
+        metric='precomputed'
+    )
+    clustering.fit(dist_graph)
+
+    labels = clustering.labels_
+
+    if not grouped:
+        return labels, None
+
+    clusters = {}
+    noisy_count = 0
+    for ind, label in enumerate(labels):
+        if label != -1:
+            if label in clusters:
+                clusters[label].append(ind)
+            else:
+                clusters[label] = [ind]
+        else:
+            clusters[-(noisy_count + 1)] = [ind]
+            noisy_count += 1
+
+    return labels, list(clusters.values())
 
 
 class FaceMatcher:
