@@ -11,7 +11,7 @@ from dnfal.engine import cluster_features
 
 def _run(n_samples):
 
-    distance_thr = 0.5
+    distance_thr = 0.3
 
     # Generate sample data
     centers = [[1, 1], [-1, -1], [1, -1]]
@@ -30,7 +30,7 @@ def _run(n_samples):
 
     labels, clusters = cluster_features(
         features,
-        timestamps=timestamps,
+        timestamps=None,
         distance_thr=distance_thr,
         timestamp_thr=0.9,
         min_samples=2,

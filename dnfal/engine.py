@@ -8,6 +8,7 @@ import numpy as np
 import sklearn
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import DBSCAN
+from sklearn.cluster import AgglomerativeClustering
 import torch
 from cvtlib.video import VideoCapture
 
@@ -138,7 +139,7 @@ class AdaptiveRoi:
 
 def cluster_features(
     features,
-    timestamps = None,
+    timestamps=None,
     distance_thr: float = 0.5,
     timestamp_thr: float = 0,
     min_samples: int = 2,
@@ -146,7 +147,7 @@ def cluster_features(
 ):
     dist_neigh = NearestNeighbors(radius=distance_thr)
     dist_neigh.fit(features)
-    dist_graph = dist_neigh.radius_neighbors_graph(mode='distance')
+    dist_graph = dist_neigh.radius_neighbors_graph(mode='connectivity')
 
     if timestamps is not None and timestamp_thr > 0:
         time_neigh = NearestNeighbors(radius=timestamp_thr)
@@ -155,31 +156,33 @@ def cluster_features(
         dist_graph = dist_graph.multiply(time_graph)
         dist_graph.eliminate_zeros()
 
-    clustering = DBSCAN(
-        eps=distance_thr,
-        min_samples=min_samples,
-        metric='precomputed'
+    clustering = AgglomerativeClustering(
+        n_clusters=None,
+        distance_threshold=distance_thr,
+        affinity='euclidean',
+        linkage='ward',
+        connectivity=dist_graph
     )
-    clustering.fit(dist_graph)
+
+    clustering.fit(features)
 
     labels = clustering.labels_
 
     if not grouped:
         return labels, None
 
-    clusters = {}
-    noisy_count = 0
+    labels_set = set(labels) - {-1}
+
+    clusters = {label: [] for label in labels_set}
+    outliers = []
+
     for ind, label in enumerate(labels):
         if label != -1:
-            if label in clusters:
-                clusters[label].append(ind)
-            else:
-                clusters[label] = [ind]
+            clusters[label].append(ind)
         else:
-            clusters[-(noisy_count + 1)] = [ind]
-            noisy_count += 1
+            outliers.append([ind])
 
-    return labels, list(clusters.values())
+    return labels, list(clusters.values()) + outliers
 
 
 class FaceMatcher:
