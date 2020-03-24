@@ -104,9 +104,9 @@ class GenderAgePredictor:
             ages_preds = np.sum(ages_probs * AGE_CLS_WEIGHTS, axis=1)
 
             diff = AGE_CLS_WEIGHTS - ages_preds.reshape((-1, 1))
-            ages_stds = np.mean(ages_probs * diff * diff, axis=1)
+            age_vars = np.sqrt(np.mean(ages_probs * diff * diff, axis=1))
 
-        return genders_preds, genders_probs, ages_preds, ages_stds
+        return genders_preds, genders_probs, ages_preds, age_vars
 
 
 def _image_transform(image: np.ndarray):

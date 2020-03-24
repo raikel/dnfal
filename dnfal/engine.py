@@ -142,7 +142,6 @@ def cluster_features(
     timestamps=None,
     distance_thr: float = 0.5,
     timestamp_thr: float = 0,
-    min_samples: int = 2,
     grouped: bool = True
 ):
     dist_neigh = NearestNeighbors(radius=distance_thr)
