@@ -1,12 +1,13 @@
 import argparse
 import sys
 
+import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.datasets import make_blobs
 from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import DBSCAN
 
-from dnfal.engine import cluster_features
+# from dnfal.engine import cluster_features
+from dnfal.clustering import cluster_features
 
 
 def _run(n_samples):
@@ -28,54 +29,58 @@ def _run(n_samples):
     print('Features set:\n')
     print(features)
 
-    labels, clusters = cluster_features(
+    # clusters = cluster_features(
+    #     features,
+    #     timestamps=timestamps,
+    #     distance_thr=distance_thr,
+    #     timestamp_thr=-1,
+    #     grouped=True
+    # )
+
+    clusters = cluster_features(
         features,
-        timestamps=None,
-        distance_thr=distance_thr,
-        timestamp_thr=0.9,
-        min_samples=2,
-        grouped=True
+        n_neighbors=3,
+        distance_thr=distance_thr
     )
 
-    print('\nLabels:\n')
-    print(labels)
     print('\nClusters:\n')
     print(clusters)
 
-    # db = DBSCAN(eps=distance_thr, min_samples=2).fit(features)
-    # labels = db.labels_
-    core_samples_mask = np.zeros_like(labels, dtype=bool)
-    core_samples_mask[labels != -1] = True
-
     # Number of clusters in labels, ignoring noise if present.
-    n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-    n_noise_ = list(labels).count(-1)
+    clustered = [cluster for cluster in clusters if len(cluster) > 1]
+    outliers = [cluster for cluster in clusters if len(cluster) == 1]
+    n_clusters_ = len(clustered)
+    n_noise_ = len(clusters) - n_clusters_
 
     print(f'\nEstimated number of clusters: {n_clusters_}')
     print(f'Estimated number of noise points: {n_noise_}')
 
     # #############################################################################
-    # Plot result
-    import matplotlib.pyplot as plt
+    # Plot results
 
-    # Black removed and is used for noise instead.
-    unique_labels = set(labels)
-    colors = [plt.cm.Spectral(each)
-              for each in np.linspace(0, 1, len(unique_labels))]
-    for k, col in zip(unique_labels, colors):
-        if k == -1:
-            # Black used for noise.
-            col = [0, 0, 0, 1]
+    colors = [
+        plt.cm.Spectral(each)
+        for each in np.linspace(0, 1, n_clusters_ )
+    ]
 
-        class_member_mask = (labels == k)
+    for cluster, color in zip(clustered, colors):
+        xy = features[cluster]
+        plt.plot(
+            xy[:, 0], xy[:, 1], 'o',
+            markerfacecolor=tuple(color),
+            markeredgecolor='k',
+            markersize=14
+        )
 
-        xy = features[class_member_mask & core_samples_mask]
-        plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col),
-                 markeredgecolor='k', markersize=14)
-
-        xy = features[class_member_mask & ~core_samples_mask]
-        plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=tuple(col),
-                 markeredgecolor='k', markersize=6)
+    for outlier in outliers:
+        col = [0, 0, 0, 1]
+        xy = features[outlier]
+        plt.plot(
+            xy[:, 0], xy[:, 1], 'o',
+            markerfacecolor=tuple(col),
+            markeredgecolor='k',
+            markersize=6
+        )
 
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     plt.show()

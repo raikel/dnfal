@@ -7,7 +7,8 @@ import cvtlib
 import numpy as np
 import sklearn
 from sklearn.neighbors import NearestNeighbors
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN, OPTICS
+from scipy.sparse.csgraph import connected_components
 from sklearn.cluster import AgglomerativeClustering
 import torch
 from cvtlib.video import VideoCapture
@@ -135,53 +136,6 @@ class AdaptiveRoi:
             )) / 4
 
             self._roi_dev = alpha * roi_dev + (1 - alpha) * self._roi_dev
-
-
-def cluster_features(
-    features,
-    timestamps=None,
-    distance_thr: float = 0.5,
-    timestamp_thr: float = 0,
-    grouped: bool = True
-):
-    dist_neigh = NearestNeighbors(radius=distance_thr)
-    dist_neigh.fit(features)
-    dist_graph = dist_neigh.radius_neighbors_graph(mode='connectivity')
-
-    if timestamps is not None and timestamp_thr > 0:
-        time_neigh = NearestNeighbors(radius=timestamp_thr)
-        time_neigh.fit(timestamps)
-        time_graph = time_neigh.radius_neighbors_graph(mode='connectivity')
-        dist_graph = dist_graph.multiply(time_graph)
-        dist_graph.eliminate_zeros()
-
-    clustering = AgglomerativeClustering(
-        n_clusters=None,
-        distance_threshold=distance_thr,
-        affinity='euclidean',
-        linkage='ward',
-        connectivity=dist_graph
-    )
-
-    clustering.fit(features)
-
-    labels = clustering.labels_
-
-    if not grouped:
-        return labels, None
-
-    labels_set = set(labels) - {-1}
-
-    clusters = {label: [] for label in labels_set}
-    outliers = []
-
-    for ind, label in enumerate(labels):
-        if label != -1:
-            clusters[label].append(ind)
-        else:
-            outliers.append([ind])
-
-    return labels, list(clusters.values()) + outliers
 
 
 class FaceMatcher:
